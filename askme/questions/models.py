@@ -5,14 +5,11 @@ from django.utils.translation import gettext_lazy as _
 
 class Question(models.Model):
     asked_by = models.ForeignKey(
-        _("ID of the user who asked the question, could anonymous"),
         'users.User',
-        on_delete=models.CASCADE,
-        blank=True
+        on_delete=models.CASCADE
     )
 
     asked_to = models.ForeignKey(
-        _("ID of the user the question is addressed to"),
         'users.User',
         on_delete=models.CASCADE
     )
