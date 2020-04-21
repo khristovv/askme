@@ -6,12 +6,14 @@ from django.utils.translation import gettext_lazy as _
 class Question(models.Model):
     asked_by = models.ForeignKey(
         'users.User',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='questions_posed'
     )
 
     asked_to = models.ForeignKey(
         'users.User',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='questions_received'
     )
 
     content = models.CharField(
