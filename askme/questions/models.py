@@ -3,11 +3,12 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 
-class Question(models.Model):
+# TODO: not yet finished
+class Question:
     asked_by = models.ForeignKey(
         'users.User',
         on_delete=models.CASCADE,
-        related_name='questions_posed'
+        related_name='questions_posted'
     )
 
     asked_to = models.ForeignKey(
