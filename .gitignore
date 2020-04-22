@@ -139,5 +139,7 @@ cython_debug/
 
 
 .idea
-
 idea/
+
+# static directory
+staticfiles/

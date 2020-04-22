@@ -125,10 +125,15 @@ LOGIN_REDIRECT_URL = 'profile'  # will look in urls
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+
 STATIC_URL = '/static/'
 
+# all static files collected by the static file finders will be stored in this directory
 
-# STATIC_ROOT = '/static/'
+# NOTE! since 'django.contrib.staticfiles.finders.AppDirectoriesFinder' is enabled by default
+# all static files contained in the 'static' directory of each app present in INSTALLED_APPS will be copied
+# INCLUDING the admin ones (not sure if this is the behaviour we want .. )
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
