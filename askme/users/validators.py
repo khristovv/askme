@@ -7,11 +7,10 @@ from django.utils.translation import gettext_lazy as _
 
 class UsernameValidator(validators.RegexValidator):
     MIN_USERNAME_LENGTH = 3
-
-    regex = '^[\w.-]+\Z'
+    regex = '^[\w._-]+\Z'
     message = _(
         "A valid username consists of English letters (lower and upper case), "
-        "numbers, and the following characters: '.', '_'"
+        "numbers, and the following characters: '.', '_', '-'"
     )
     flags = re.ASCII
 
