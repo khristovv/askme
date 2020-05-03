@@ -11,7 +11,7 @@ from .validators import UsernameValidator
 # TODO: add more fields to Profile
 # TODO: add version control
 
-# asd1@mail.com - pass: SOMEc00lP@ssW
+# asd@mail.com - pass: SOMEc00lP@ssW
 
 
 class User(AbstractUser):
@@ -41,7 +41,14 @@ class User(AbstractUser):
     objects = UserManager()
 
     def __str__(self):
-        return f"{self.email} - joined on: {self.date_joined}"
+        return f"{self.username}"
+
+    def get_answered_questions(self):
+        return self.questions_received.filter(
+            answer__isnull=False, hidden=False)
+
+    def get_unanswered_questions(self):
+        return self.questions_received.filter(answer__isnull=True)
 
 
 class Profile(models.Model):

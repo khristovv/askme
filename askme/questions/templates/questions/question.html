@@ -1,0 +1,12 @@
+<article class="card mt-2 mb-2">
+    <div class="card-body">
+        <h4 class="card-title">{{question.content}}</h4>
+        <h6 class="card-subtitle mb-2 text-muted">
+            Asked by: <a href={% url "profile" question.asked_by %}>@{{question.asked_by}}</a>
+        </h6>
+        <p class="card-text">{{question.answer.content}}</p>
+        <button type="button" class="btn btn-outline-danger">
+            <i class="far fa-heart"></i>
+        </button>
+    </div>
+</article>

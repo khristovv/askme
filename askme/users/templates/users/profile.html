@@ -3,4 +3,14 @@
     {% include "core/navbar.html" %}
 {% endblock %}
 {% block content %}
+<div class="container">
+    <div class=".row">
+        {% include "questions/post_question.html" %}
+    </div>
+    {% for question in questions %}
+    <div class=".row">
+        {% include "questions/question.html" %}
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

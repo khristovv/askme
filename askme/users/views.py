@@ -7,6 +7,9 @@ from django.contrib import messages
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_str, force_bytes
 
+from questions.forms import PostQuestionForm
+from questions.models import Question
+from users.models import Profile
 from .forms import UserCreationForm
 from .utils import send_account_confirmation_email, account_confirmation_token_generator
 
@@ -48,6 +51,36 @@ def activate_account(request, uidb64, token):
         return HttpResponse('Confirmation token has expired or has been altered!')
 
 
+def profile(request, username):
+    try:
+        p = Profile.objects.get(user__username=username)
+    except Profile.DoesNotExist:
+        messages.warning(request, f"No user found with username: {username}")
+        return HttpResponse(f"No user found with username: {username}")
+    if request.method == 'POST' and request.user.is_authenticated:
+        form = PostQuestionForm(request.POST)
+        if form.is_valid():
+            q = Question(
+                asked_by=request.user if not form.cleaned_data.get('is_anonymous') else None,
+                asked_to=p.user,
+                content=form.cleaned_data.get('question_text')
+            )
+            q.save()
+            messages.success(request, 'Question posted successfully!')
+    elif not request.user.is_authenticated:
+        messages.warning(request, 'Log in to post a question.')
+        redirect('/login/')
+    form = PostQuestionForm()
+    questions = p.user.get_answered_questions()
+    return render(request, 'users/profile.html', {
+        'question_max_length': 512,
+        'profile': p,
+        'questions': questions,
+        'form': form
+    })
+
+
 @login_required
-def profile(request):
-    return render(request, 'users/profile.html')
+def like_answer(request):
+    # TODO
+    pass
