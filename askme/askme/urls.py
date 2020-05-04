@@ -28,6 +28,6 @@ urlpatterns = [
     path('register/', user_views.register, name='register'),
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
-    re_path(r'^profiles/(?P<username>[\w.-_]+)/$', user_views.profile, name='profile'),
+    re_path(r'^board/(?P<username>[\w.-_]+)/$', core_views.board, name='board'),
     re_path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', user_views.activate_account, name='activate')
 ]
