@@ -13,6 +13,7 @@ class TestUserCreationForm(TestCase):
             'password2': 'A_VERY-$trong.p@assworD'
         })
         self.assertFalse(form.is_valid())
+        self.assertTrue('username' not in form.clean())
 
     def test_mismatching_passwords(self):
         form = UserCreationForm(data={
@@ -22,8 +23,9 @@ class TestUserCreationForm(TestCase):
             'password2': 'mismatching_passwords'
         })
         self.assertFalse(form.is_valid())
+        self.assertTrue('password2' not in form.clean())
 
-    def test_user_wil_email_already_exists(self):
+    def test_user_with_email_already_exists(self):
         User.objects.create_user('user1@mail.com', 'user1', 'A_VERY-$trong.p@assworD')
 
         form = UserCreationForm(data={
@@ -33,6 +35,7 @@ class TestUserCreationForm(TestCase):
             'password2': 'A_VERY-$trong.p@assworD'
         })
         self.assertFalse(form.is_valid())
+        self.assertTrue('email' not in form.clean())
 
     def test_valid_form_scenario(self):
         form = UserCreationForm(data={
@@ -42,5 +45,11 @@ class TestUserCreationForm(TestCase):
             'password2': 'A_VERY-$trong.p@assworD'
         })
         self.assertTrue(form.is_valid())
+        self.assertEqual(form.clean(), {
+            'email': 'email2@mail.com',
+            'username': 'bad-username',
+            'password1': 'A_VERY-$trong.p@assworD',
+            'password2': 'A_VERY-$trong.p@assworD'
+        })
 
 
