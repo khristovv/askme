@@ -17,7 +17,7 @@ def home(request):
 
 def board(request, username):
     try:
-        p = Profile.objects.get(user__username=username)
+        profile = Profile.objects.get(user__username=username)
     except Profile.DoesNotExist:
         messages.warning(request, f"No user found with username: {username}")
         return HttpResponse(f"No user found with username: {username}")
@@ -26,19 +26,19 @@ def board(request, username):
         if form.is_valid():
             q = Question(
                 asked_by=request.user if not form.cleaned_data.get('is_anonymous') else None,
-                asked_to=p.user,
+                asked_to=profile.user,
                 content=form.cleaned_data.get('question_text')
             )
             q.save()
             messages.success(request, 'Question posted successfully!')
-    elif not request.user.is_authenticated:
+    elif request.method == 'POST' and not request.user.is_authenticated:
         messages.warning(request, 'Log in to post a question.')
-        redirect('/login/')
+        return redirect('/login/')
     form = PostQuestionForm()
-    questions = p.user.get_answered_questions()
+    questions = profile.user.get_public_questions()
     return render(request, 'core/board.html', {
         'question_max_length': 512,
-        'profile': p,
+        'profile': profile,
         'questions': questions,
         'form': form
     })
