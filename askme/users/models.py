@@ -9,9 +9,8 @@ from django.dispatch import receiver
 from .managers import UserManager
 from .validators import UsernameValidator
 # TODO: add more fields to Profile
-# TODO: add version control
 
-# asd1@mail.com - pass: SOMEc00lP@ssW
+# {username}@mail.com - pass: SOMEc00lP@ssW
 
 
 class User(AbstractUser):
@@ -41,7 +40,12 @@ class User(AbstractUser):
     objects = UserManager()
 
     def __str__(self):
-        return f"{self.email} - joined on: {self.date_joined}"
+        return f"{self.username}"
+
+    def get_public_questions(self):
+        """Public questions are those, which are answered and are not marked as 'hidden'"""
+        return self.questions_received.filter(
+            answer__isnull=False, hidden=False)
 
 
 class Profile(models.Model):

@@ -24,3 +24,13 @@ h5 {
   border-top: 3px solid #fff;
   width: 80px;
 }
+
+
+#id_question_text{
+    min-height: 40px;
+    max-height: 80px;
+}
+
+.asteriskField {
+    display: none;
+}

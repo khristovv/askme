@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -47,7 +46,3 @@ def activate_account(request, uidb64, token):
     else:
         return HttpResponse('Confirmation token has expired or has been altered!')
 
-
-@login_required
-def profile(request):
-    return render(request, 'users/profile.html')

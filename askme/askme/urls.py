@@ -20,6 +20,7 @@ from django.urls import path, re_path
 
 from users import views as user_views
 from core import views as core_views
+# from questions import views as question_views
 
 urlpatterns = [
     path('', core_views.home, name='index'),
@@ -27,6 +28,6 @@ urlpatterns = [
     path('register/', user_views.register, name='register'),
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
-    path('profile/', user_views.profile, name='profile'),
-    re_path('^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', user_views.activate_account, name='activate')
+    re_path(r'^board/(?P<username>[\w.-_]+)/$', core_views.board, name='board'),
+    re_path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', user_views.activate_account, name='activate')
 ]

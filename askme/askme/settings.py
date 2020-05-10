@@ -38,10 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'crispy_forms',
+
     'users.apps.UsersConfig',
     'questions.apps.QuestionsConfig',
     'core.apps.CoreConfig',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -120,7 +124,7 @@ USE_L10N = True
 USE_TZ = True
 
 
-LOGIN_REDIRECT_URL = 'profile'  # will look in urls
+LOGIN_REDIRECT_URL = '/'  # will look in urls
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
