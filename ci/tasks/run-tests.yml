@@ -8,5 +8,4 @@ source:
   repository: python
   tag: '3.7'
 run:
-  path: ./ci/scripts/run-tests.sh
-  dir: /usr/src/app/askme/
+  path: ./askme/ci/scripts/run-tests.sh
