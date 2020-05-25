@@ -1,0 +1,14 @@
+config:
+  platform: linux
+  inputs:
+  - name: git repo
+  outputs:
+  - name: deps
+image_resource:
+type: docker-image
+source:
+  repository: python
+  tag: '3.7'
+run:
+  path: ./ci/scripts/install-deps.sh
+  dir: /usr/src/app/askme/
