@@ -10,4 +10,4 @@ source:
   repository: python
   tag: '3.7'
 run:
-  path: ./askme/ci/scripts/install-deps.sh
+  path: git-repo/ci/scripts/install-deps.sh
