@@ -1,5 +1,4 @@
-config:
-  platform: linux
+platform: linux
   inputs:
   - name: source code
   outputs:

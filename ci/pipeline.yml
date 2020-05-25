@@ -1,8 +1,8 @@
 jobs:
   - name: run tests
     plan:
-      - get: source code
-        resource: git-repo
+      - get: git-repo
+        resource: source code
         trigger: true
       - task: install deps
         file: git-repo/ci/tasks/install-deps.yml
@@ -10,11 +10,10 @@ jobs:
         file: git-repo/ci/tasks/run-tests.yml
 
 resources:
-  - name: git-repo
+  - name: source code
     type: git
     source:
       uri: git@github.com:khristovv/askme.git
-      brach: ci
       private_key: |
         -----BEGIN RSA PRIVATE KEY-----
         MIIEoQIBAAKCAQEApOHzHx5dYyDUj5vRzX3mbUCGvRqRFWQIMyKB0lMjkcFcpvyu
@@ -43,7 +42,6 @@ resources:
         /lcTIICzzj3liA5psCk/KQh+xiFOkwSGyw9fsvoSCMjiV8u8kAWFPkGrdLdDQPBr
         17jpdIA0DzYl1EknhmNcvRBfZbJPih2w4XhF8bgqZJYfzd574A==
         -----END RSA PRIVATE KEY-----
-      disable_ci_skip: true
       git_config:
         - name: core.bigFileThreshold
           value: 10m
