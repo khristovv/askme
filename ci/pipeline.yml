@@ -5,9 +5,9 @@ jobs:
         resource: source code
         trigger: true
       - task: install deps
-        file: ./ci/tasks/install-deps.yml
+        file: ci/tasks/install-deps.yml
       - task: run tests
-        file: ./ci/tasks/run-tests.yml
+        file: ci/tasks/run-tests.yml
 
 resources:
   - name: source code
