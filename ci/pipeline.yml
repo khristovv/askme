@@ -1,16 +1,16 @@
 jobs:
   - name: run tests
     plan:
-      - get: git repo
-        resource: source code
+      - get: source code
+        resource: git-repo
         trigger: true
       - task: install deps
-        file: askme/ci/tasks/install-deps.yml
+        file: git-repo/ci/tasks/install-deps.yml
       - task: run tests
-        file: askme/ci/tasks/run-tests.yml
+        file: git-repo/ci/tasks/run-tests.yml
 
 resources:
-  - name: source code
+  - name: git-repo
     type: git
     source:
       uri: git@github.com:khristovv/askme.git
