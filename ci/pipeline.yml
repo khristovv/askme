@@ -11,7 +11,7 @@ resources:
   - name: source code
     type: git
     source:
-      uri: git@github.com:KamenHH/askme.git
+      uri: git@github.com:khristovv/askme.git
       brach: ci
       private_key: |
         -----BEGIN RSA PRIVATE KEY-----
