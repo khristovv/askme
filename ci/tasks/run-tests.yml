@@ -1,5 +1,6 @@
 platform: linux
 inputs:
+  - name: git-repo
   - name: deps
 image_resource:
   type: docker-image
