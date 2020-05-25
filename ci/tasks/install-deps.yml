@@ -1,6 +1,6 @@
 platform: linux
   inputs:
-  - name: source code
+  - name: git-repo
   outputs:
   - name: deps
 image_resource:
