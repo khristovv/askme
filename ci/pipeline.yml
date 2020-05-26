@@ -7,9 +7,7 @@ jobs:
         trigger: true
       - put: container image
         params:
-          build: git-repo/Dockerfile
-      - task: install deps
-        file: git-repo/ci/tasks/install-deps.yml
+          build: git-repo
       - task: run tests
         file: git-repo/ci/tasks/run-tests.yml
 
@@ -18,10 +16,10 @@ resources:
     type: docker-image
     source:
       repository: 192.168.4.134:443/askme/app
-      username: robot$concourse-ci
-      password: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTMwNjUzMDIsImlhdCI6MTU5MDQ3MzMwMiwiaXNzIjoiaGFyYm9yLXRva2VuLWRlZmF1bHRJc3N1ZXIiLCJpZCI6MSwicGlkIjoyLCJhY2Nlc3MiOlt7IlJlc291cmNlIjoiL3Byb2plY3QvMi9yZXBvc2l0b3J5IiwiQWN0aW9uIjoicHVzaCIsIkVmZmVjdCI6IiJ9XX0.TF-PEPte0NcTMOQM_ZeknxpSIfZNq3tqIsIW48R9WZwHodhTq_FpzysU3_NouQx4TLAe7iVrJKz1JGWKluEd_Nh52s2mRcKeJ-uRghQQVeXdzp3wklQO1RiuTJUTGSt9aqFEsTMO3eopl1xrec3NGC0O4ixG-t2ML2xpc71FSdXiBN8bP-aJ074LqNcVswAicLribQJT5XnAuq4ekF5ZMVMxFElUDicoVMxHiXjF3854KweW4CCu5jsOyKWYimkzXfu7r2rdfNBfSAIfO0s0pjspsjhBjGxpN_PlrXXyLvgTwy1SSoZ8Uqg2XgsqekrtAWRTxfoJmof8ooZA0ODK0z7GtrXg-t9SGE6U0uEsUqKrvIMof6wr9lbp1RfY1nJloGrLGibxh0KUK6EFuT5Qcuq0TaypcmDWEsJbl1dXzCA26l_MqR2Mp8_5jn7U_OEpjYjqWTH1HhgzTteQFw5q-07RsNx0GlygJQV15K-hZe_OqNAQUuBex7ooTVD2ucz3T8SpzwodROtJcJlmUfoQHu2bRV_Bf4V0boyleGYhc3MvnzunWkg7GA02sUzG74iAFCgDDhvgjbs80fxJU0t2WDrDGv5Xr5ISBhhNKTvXEg23gKuB4XEFrdIwMN1ucZWiJw7AC3uKnzBP3ysJQgUqcSKx_d8iJ1xG30g6aG_6vIc
+      username: 'admin'
+      password: 'Verl!hub96'
       tag: latest
-
+      insecure_registries: ['192.168.4.134:443']
   - name: source code
     type: git
     source:
