@@ -1,10 +1,5 @@
 platform: linux
 inputs:
   - name: git-repo
-image_resource:
-  type: docker-image
-  source:
-    repository: 192.168.4.134:443/askme/app
-    tag: latest
 run:
   path: git-repo/ci/scripts/run-tests.sh

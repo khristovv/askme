@@ -1,18 +1,37 @@
 jobs:
-  - name: run tests
+  - name: build-cached-image
     serial: true
     plan:
       - get: git-repo
         resource: source code
         trigger: true
-      - put: container image
+      - put: container-image
         params:
           build: git-repo
+      - task: print version
+        image: container-image
+        config:
+          platform: linux
+          run:
+            path: bash
+            args:
+              - -c
+              - |
+                echo "Test"
+
+  - name: run-tests
+    plan:
+      - get: git-repo
+        resource: source code
+      - get: container-image
+        passed: [build-cached-image]
+        trigger: true
       - task: run tests
+        image: container-image
         file: git-repo/ci/tasks/run-tests.yml
 
 resources:
-  - name: container image
+  - name: container-image
     type: docker-image
     source:
       repository: 192.168.4.134:443/askme/app
