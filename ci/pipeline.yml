@@ -18,7 +18,11 @@ jobs:
               - -c
               - |
                 echo "Test"
-
+    ensure:
+      put: commit-status
+      params:
+        path: khristovv/askme.git
+        state: pending
   - name: run-tests
     plan:
       - get: git-repo
@@ -29,6 +33,16 @@ jobs:
       - task: run tests
         image: container-image
         file: git-repo/ci/tasks/run-tests.yml
+    on_success:
+      put: commit-status
+      params:
+        path: khristovv/askme.git
+        state: success
+      on_failure:
+        put: commit-status
+        params:
+          path: khristovv/askme.git
+          state: failure
 
 resources:
   - name: container-image
@@ -74,3 +88,12 @@ resources:
       git_config:
         - name: core.bigFileThreshold
           value: 10m
+  - name: commit-status
+    type: github-status
+
+resource_types:
+  - name: github-status
+    type: docker-image
+    source:
+      repository: khristovv/askme.git
+      access_token: 6c1d381602182397fd02af1f3f527fa6e22a4c1c
