@@ -5,9 +5,13 @@ jobs:
       - get: git-repo
         resource: source code
         trigger: true
+      - get: python-base-image
+        params:
+          save: true
       - put: container-image
         params:
           build: git-repo
+          load_base: 'python:3.7'
       - task: print version
         image: container-image
         config:
@@ -18,11 +22,6 @@ jobs:
               - -c
               - |
                 echo "Test"
-    ensure:
-      put: commit-status
-      params:
-        path: khristovv/askme.git
-        state: pending
   - name: run-tests
     plan:
       - get: git-repo
@@ -36,15 +35,19 @@ jobs:
     on_success:
       put: commit-status
       params:
-        path: khristovv/askme.git
+        path: git-repo
         state: success
-      on_failure:
-        put: commit-status
-        params:
-          path: khristovv/askme.git
-          state: failure
+    on_failure:
+      put: commit-status
+      params:
+        path: git-repo
+        state: failure
 
 resources:
+  - name: python-base-image
+    type: docker-image
+    source:
+      repository: 'python:3.7'
   - name: container-image
     type: docker-image
     source:
@@ -90,10 +93,12 @@ resources:
           value: 10m
   - name: commit-status
     type: github-status
+    source:
+      repo: khristovv/askme
+      access_token: 6c1d381602182397fd02af1f3f527fa6e22a4c1c
 
 resource_types:
   - name: github-status
     type: docker-image
     source:
-      repository: khristovv/askme.git
-      access_token: 6c1d381602182397fd02af1f3f527fa6e22a4c1c
+      repository: resource/github-status
