@@ -17,7 +17,7 @@ jobs:
         config:
           platform: linux
           run:
-            path: bash
+            path: sh
             args:
               - -c
               - |
