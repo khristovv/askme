@@ -1,0 +1,5 @@
+platform: linux
+inputs:
+  - name: git-repo
+run:
+  path: git-repo/ci/scripts/run-tests.sh

@@ -1,0 +1,105 @@
+jobs:
+  - name: build-cached-image
+    serial: true
+    plan:
+      - get: git-repo
+        resource: source code
+        trigger: true
+      - get: python-base-image
+        params:
+          save: true
+      - put: container-image
+        params:
+          build: git-repo
+          load_base: python-base-image
+      - task: print version
+        image: container-image
+        config:
+          platform: linux
+          run:
+            path: sh
+            args:
+              - -c
+              - |
+                echo "Test"
+  - name: run-tests
+    plan:
+      - get: git-repo
+        resource: source code
+      - get: container-image
+        passed: [build-cached-image]
+        trigger: true
+      - task: run tests
+        image: container-image
+        file: git-repo/ci/tasks/run-tests.yml
+    on_success:
+      put: commit-status
+      params:
+        path: git-repo
+        state: success
+    on_failure:
+      put: commit-status
+      params:
+        path: git-repo
+        state: failure
+
+resources:
+  - name: python-base-image
+    type: docker-image
+    source:
+      repository: python
+      tag: 3.7-alpine
+  - name: container-image
+    type: docker-image
+    source:
+      repository: 192.168.4.134:443/askme/app
+      username: 'admin'
+      password: 'Verl!hub96'
+      tag: latest
+      insecure_registries: ['192.168.4.134:443']
+  - name: source code
+    type: git
+    source:
+      uri: git@github.com:khristovv/askme.git
+      private_key: |
+        -----BEGIN RSA PRIVATE KEY-----
+        MIIEoQIBAAKCAQEApOHzHx5dYyDUj5vRzX3mbUCGvRqRFWQIMyKB0lMjkcFcpvyu
+        f3UwFQoWANgw3/JLjwqwB7uXAgJStYPpC56YJBq7Le/5ry3BgphEW8JhpHkBasfo
+        jwnMpCwwiY80f8cop7kTbWcQCKzBim5ao/ynmWUPj0v40lOcPe6V0VYfV7wo/+r6
+        YBzlUNgPxV9W4z2ZH79XyE94As4k9RdUp7BzYzDpJflq58ATg8Ch7OV6X446Zsoj
+        W5Rw1Xi1+wQqnEK1tS7+dfLIthwzrFmFmMpWvKdzPlx/MfJxwllu2Mzdf3FLDo9D
+        qP7lmxWETLyN6dzNKOfEOYXNlE/OXYxscHR45wIBJQKCAQEAoG0j5u0cl8zqfeO3
+        YCd4akyexdSo1orXi7LfLYFTCltFZDQfZ0GWkQLk+ecazA5XWr5KaGN+K3fhxV3A
+        JvssPs3mjY+LJvwWOeBCgsr3OD5iPmGkAMtDpqeJK+VH1kU8UCmyCZS1p5NUhrCP
+        isxQCt7etO/5A/5S1HlvLIslah1GnBzrEyk9suBU4c9pHll0j4R1/pyUbYlMic6+
+        8IDrzITtZgPiXrPWzgVYhMQZ6k91XIZp72Izd9Vfq1BVO6uvTTZzH1LD2LXfKa4u
+        NAyhVrvQropCR0teQ20WeRZN6JfuvTtC44WnzxNd7ountccmJSAbAXIzfuZ/EZQO
+        BjjyLQKBgQDyBpkkN7VDt/hN6Ycq+oE9/3N068xwJB0CanDiPpJL/owETjivWPEj
+        95ljb6G5ZupafknvB3rozGvTpyWV5RTMXfXC5B/OrDZrh4tWxV8Uag1m/PtKJ8PB
+        6+KVtYQzWtTIlBE6TTh9j+dseAkkqenxXFBggxwlWKFAwxn+KwgMsQKBgQCuZxer
+        qgt3hJWjgfvjbRlN/pH3z7dvUasiGXWDgCfftf/UZ8r2dJYZ4xOHEUFRALXDuy7y
+        HhEMBsbqquh2APZYuaTTeL3ppA5p5KJGc0HVZCAgcYv/JHaO9LiCCmOEvKsF/x2S
+        1X0Jy6+FgxWnjDuC0Rnyn5fW3M/gVppDabHlFwKBgEFpkSxiFVCSliLlK3NmTHGe
+        /JwkDb1xi0zC0mapIJ7q2bv5dxqiaq/GYM7EOYwN+iZLpUeFeyopaUAfVkQwE3WB
+        LapLfjfbhFRp0qHUeo/lT7r4Q+qHSaoIZsCtmVn835AoBKf5Mdy/G/PNakFCre40
+        oBoVmOd/vOESIrNlk3kNAoGAeo2h7kAju8Tzh6dyu30Ys1jw81OxVSShxO9LqIOR
+        pB8GzJv2Z/7mBFpgv8bvoLRkDQATJq1YFknzkCUSDbt8rQzUsEcB/iBBetgDVBmj
+        4g8B0Zvl1eJFeTZYJAdM2dCvh6xZ+HpX3V6ysNinbtE+k0bT9pmo99lvewxsZrj5
+        jDkCgYBvJ1L6bu5XKl0YzXjcprXd0LS2wycSVYootJzEFWUsBNaKzFCoK13zAJj1
+        /lcTIICzzj3liA5psCk/KQh+xiFOkwSGyw9fsvoSCMjiV8u8kAWFPkGrdLdDQPBr
+        17jpdIA0DzYl1EknhmNcvRBfZbJPih2w4XhF8bgqZJYfzd574A==
+        -----END RSA PRIVATE KEY-----
+      git_config:
+        - name: core.bigFileThreshold
+          value: 10m
+  - name: commit-status
+    type: github-status
+    source:
+      repo: khristovv/askme
+      access_token: 6c1d381602182397fd02af1f3f527fa6e22a4c1c
+
+resource_types:
+  - name: github-status
+    type: docker-image
+    source:
+      repository: resource/github-status
