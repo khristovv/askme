@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.http import HttpResponseForbidden
+from django.shortcuts import redirect, render, get_object_or_404
 
 from questions.forms import AnswerQuestionForm
 from questions.models import Question
@@ -9,9 +9,9 @@ from questions.models import Question
 
 @login_required
 def answer_question(request, question_id):
-    question = Question.objects.get(pk=question_id)
+    question = get_object_or_404(Question, pk=question_id)  # Question.objects.get(pk=question_id)
     if question.asked_to != request.user:
-        return HttpResponse('Not allowed!')
+        return HttpResponseForbidden('Not allowed!')
     form = AnswerQuestionForm(request.POST or None)
     if form.is_valid():
         answer = form.save(commit=False)
