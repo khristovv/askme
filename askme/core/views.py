@@ -1,6 +1,9 @@
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
+from django.views.generic import View
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 from questions.forms import PostQuestionForm
 from questions.models import Question
@@ -16,6 +19,7 @@ def home(request):
 
 
 def board(request, username):
+    # TODO: refactor into a class based view
     try:
         profile = Profile.objects.get(user__username=username)
     except Profile.DoesNotExist:
@@ -42,4 +46,13 @@ def board(request, username):
         'questions': questions,
         'form': form
     })
+
+
+class Inbox(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        unanswered_questions = request.user.get_unanswered_questions()
+        return render(request, 'core/inbox.html', {
+            'questions': unanswered_questions
+        })
 
