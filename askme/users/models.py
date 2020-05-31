@@ -45,7 +45,8 @@ class User(AbstractUser):
     def get_public_questions(self):
         """Public questions are those, which are answered and are not marked as 'hidden'"""
         return self.questions_received.filter(
-            answer__isnull=False, hidden=False)
+            answer__isnull=False, hidden=False
+        ).order_by(('-answer__answered_on'))
 
     def get_unanswered_questions(self):
         return self.questions_received.filter(
