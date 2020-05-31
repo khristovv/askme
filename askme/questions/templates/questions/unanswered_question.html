@@ -1,0 +1,15 @@
+<article class="card mt-2 mb-2">
+    <div class="card-body">
+        <h4 class="card-title">{{question.content}}</h4>
+        <h6 class="card-subtitle mb-2 text-muted">
+            {% if question.asked_by %}
+                Asked by: <a href={% url "board" question.asked_by %}>@{{question.asked_by}}</a> on: {{ question.asked_on }}
+            {% else %}
+                Anonymous on: {{ question.asked_on }}
+            {% endif %}
+        </h6>
+        <a href={% url "answer_question" question.id %} class="btn btn-primary">
+           Answer <i class="fas fa-angle-double-right"></i>
+        </a>
+    </div>
+</article>

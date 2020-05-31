@@ -47,6 +47,11 @@ class User(AbstractUser):
         return self.questions_received.filter(
             answer__isnull=False, hidden=False)
 
+    def get_unanswered_questions(self):
+        return self.questions_received.filter(
+            answer__isnull=True
+        ).order_by('-asked_on')
+
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

@@ -1,4 +1,5 @@
 from django import forms
+from questions.models import Answer
 
 
 class PostQuestionForm(forms.Form):
@@ -17,5 +18,16 @@ class PostQuestionForm(forms.Form):
         required=False,
         label="Ask anonymously"
     )
+
+
+class AnswerQuestionForm(forms.ModelForm):
+    class Meta:
+        model = Answer
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={
+                "rows": 2,
+                "id": "id_answer_content"})
+        }
 
 
