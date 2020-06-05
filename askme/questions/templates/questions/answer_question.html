@@ -1,0 +1,28 @@
+{% extends "core/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block navbar %}
+    {% include "core/navbar.html" %}
+{% endblock %}
+{% block content %}
+<div class="container">
+    <!--div class="d-flex justify-content-center h-100" !-->
+        <form method="post">
+            {% csrf_token %}
+            <article class="card mt-5 mb-2 w-22">
+                <div class="card-header">
+                    <h4 class="card-title"> {{question.content}}</h4>
+                </div>
+                <div class="card-body">
+                    {{form.content|as_crispy_field}}
+                    <div class="form-group col-md-2">
+                        <button type="submit" class="btn btn-primary">
+                            Answer
+                        </button>
+                    </div>
+                </div>
+            </article>
+        </form>
+    <!--</div>-->
+</div>
+{% endblock %}
