@@ -7,10 +7,11 @@
     <div class=".row">
         {% include "questions/post_question.html" %}
     </div>
-    {% for question in questions %}
+    {% for question in questions_page %}
     <div class=".row">
         {% include "questions/answered_question.html" %}
     </div>
     {% endfor %}
+    {% include "core/pagination.html" %}
 </div>
 {% endblock %}
