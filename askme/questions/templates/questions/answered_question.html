@@ -9,8 +9,16 @@
             {% endif %}
         </h6>
         <p class="card-text">{{question.answer.content}}</p>
-        <button type="button" class="btn btn-outline-danger">
+        {% if question.answer in user.liked_questions.all %}
+        <a answer-id={{question.answer.id}} type="button" class="btn btn-outline-danger like-button active" data-toggle="button" aria-pressed="true" href={% url "toggle_like" %}>
             <i class="far fa-heart"></i>
-        </button>
+            <span>{{question.answer.likes.count}}</span>
+        </a>
+        {% else %}
+        <a answer-id={{question.answer.id}} type="button" class="btn btn-outline-danger like-button" data-toggle="button" aria-pressed="false" href={% url "toggle_like" %}>
+            <i class="far fa-heart"></i>
+            <span>{{question.answer.likes.count}}</span>
+        </a>
+        {% endif %}
     </div>
 </article>

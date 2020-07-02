@@ -58,33 +58,7 @@ class Answer(models.Model):
         max_length=1024
     )
 
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_questions')
+
     def __str__(self):
         return f"Question {self.question} answered on {self.answered_on}"
-
-
-class Like(models.Model):
-    answer = models.ForeignKey(
-        'questions.Answer',
-        on_delete=models.CASCADE,
-        related_name='likes'
-    )
-
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='liked_answers'
-    )
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=[
-                    'answer', 'user'
-                ],
-                name='user_liked'
-            )
-        ]
-
-    def __str__(self):
-        return f"Answer {self.answer} liked by {self.user}"
-
