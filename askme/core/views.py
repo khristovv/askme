@@ -1,8 +1,7 @@
 from django.contrib import messages
+from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from django.views.generic import View
-from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 
 from questions.forms import PostQuestionForm
@@ -40,19 +39,21 @@ def board(request, username):
         return redirect('/login/')
     form = PostQuestionForm()
     questions = profile.user.get_public_questions()
+    paginator = Paginator(questions, 5)
+    questions_page = paginator.get_page(request.GET.get('page'))
     return render(request, 'core/board.html', {
         'question_max_length': 512,
         'profile': profile,
-        'questions': questions,
+        'questions_page': questions_page,
         'form': form
     })
 
 
-class Inbox(View):
-    @method_decorator(login_required)
-    def get(self, request):
-        unanswered_questions = request.user.get_unanswered_questions()
-        return render(request, 'core/inbox.html', {
-            'questions': unanswered_questions
-        })
-
+@login_required
+def inbox(request):
+    unanswered_questions = request.user.get_unanswered_questions()
+    paginator = Paginator(unanswered_questions, 5)
+    questions_page = paginator.get_page(request.GET.get('page'))
+    return render(request, 'core/inbox.html', {
+        'questions_page': questions_page
+    })

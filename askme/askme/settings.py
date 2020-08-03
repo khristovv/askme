@@ -85,8 +85,15 @@ WSGI_APPLICATION = 'askme.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'askmedb',
+        'USER': os.environ.get('ASKME_DB_ADMIN'),
+        'PASSWORD': os.environ.get('ASKME_DB_ADMIN_PASS'),
+        'HOST': 'localhost',
+        'PORT': '',
+        'TEST': {
+            'NAME': 'askmedb_test',
+        },
     }
 }
 
