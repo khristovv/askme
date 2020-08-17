@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path, re_path
+from django.conf import settings
 
 
 from users import views as user_views
@@ -32,6 +33,6 @@ urlpatterns = [
     path('inbox/', core_views.inbox, name='inbox'),
     path('inbox/question/<int:question_id>', question_views.answer_question, name='answer_question'),
     path('like/', question_views.toggle_like, name='toggle_like'),
-    re_path(r'^board/(?P<username>[\w.-_]+)/$', core_views.board, name='board'),
+    re_path(f'^board/(?P<username>{settings.USERNAME_REGEX_PATTERN})/$', core_views.board, name='board'),
     re_path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', user_views.activate_account, name='activate')
 ]
